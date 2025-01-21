@@ -1,5 +1,4 @@
 import type { IConfigOption, Theme } from '@/types'
-
 import { toMerged } from 'es-toolkit'
 
 const defaultTheme: Theme = {
@@ -431,9 +430,176 @@ const graceTheme = toMerged(defaultTheme, {
   },
 })
 
+const bloggerTheme = toMerged(defaultTheme, {
+  base: {
+    '--md-primary-color': `#ffffff`,
+    'text-align': `left`,
+    'line-height': `1.75`,
+  },
+  block: {
+    'container': {
+      'background-color': `rgba(33, 37, 41, 1)`,
+    },
+    'h1': {
+      'display': `inline`,
+      'padding': `0.5em 1em`,
+      'border-bottom': `2px solid var(--md-primary-color)`,
+      'font-size': `1.4em`,
+      'text-shadow': `2px 2px 4px rgba(0,0,0,0.1)`,
+      'color': `#fff`,
+      'text-align': `left`,
+    },
+
+    'h2': {
+      'display': `inline`,
+      'padding': `0.3em 1em`,
+      'border-radius': `8px`,
+      'font-size': `1.3em`,
+      'box-shadow': `0 4px 6px rgba(0,0,0,0.1)`,
+      'color': `#fff`,
+      'text-align': `left`,
+    },
+
+    'h3': {
+      'padding-left': `12px`,
+      'font-size': `1.2em`,
+      'border-left': `4px solid var(--md-primary-color)`,
+      'border-bottom': `1px dashed var(--md-primary-color)`,
+      'color': `#fff`,
+    },
+
+    'h4': {
+      'font-size': `1.1em`,
+      'color': `#fff`,
+    },
+
+    'h5': {
+      'font-size': `1em`,
+      'color': `#fff`,
+    },
+
+    'h6': {
+      'font-size': `1em`,
+      'color': `#fff`,
+    },
+
+    'p': {
+      color: `#ffffff`,
+    },
+
+    'blockquote': {
+      'font-style': `italic`,
+      'padding': `1em 1em 1em 2em`,
+      'border-left': `4px solid var(--md-primary-color)`,
+      'border-radius': `6px`,
+      'color': `rgba(255,255,255,0.6)`,
+      'box-shadow': `0 4px 6px rgba(0,0,0,0.05)`,
+      'margin-bottom': `1em`,
+      'background': `rgba(41, 45, 48, 0.7)`,
+    },
+
+    'blockquote_p': {
+      color: `#fff`,
+    },
+
+    'markdown-alert': {
+      'font-style': `italic`,
+    },
+
+    'code_pre': {
+      'box-shadow': `inset 0 0 10px rgba(0,0,0,0.05)`,
+    },
+
+    'code': {
+      'white-space': `pre-wrap`,
+      'font-family': `'Fira Code', Menlo, Operator Mono, Consolas, Monaco, monospace`,
+    },
+
+    'image': {
+      'border-radius': `8px`,
+      'box-shadow': `0 4px 8px rgba(0,0,0,0.1)`,
+    },
+
+    'ol': {
+      'padding-left': `1.5em`,
+    },
+
+    'ul': {
+      'list-style': `none`,
+      'padding-left': `1.5em`,
+    },
+
+    'footnotes': {
+
+    },
+
+    'figure': {
+      color: `#fff`,
+    },
+
+    'hr': {
+      height: `1px`,
+      border: `none`,
+      margin: `2em 0`,
+      background: `linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.1), rgba(0,0,0,0))`,
+    },
+  },
+  inline: {
+    listitem: {
+      margin: `0.5em 8px`,
+      color: `#fff`,
+    },
+
+    codespan: {
+    },
+
+    em: {
+      color: `#fff`,
+    },
+
+    link: {
+    },
+
+    wx_link: {
+    },
+
+    strong: {
+      color: `#fff`,
+    },
+
+    table: {
+      'border-collapse': `separate`,
+      'border-spacing': `0`,
+      'border-radius': `8px`,
+      'margin': `1em 8px`,
+      'color': `#fff`,
+      'box-shadow': `0 4px 6px rgba(0,0,0,0.1)`,
+      'overflow': `hidden`,
+    },
+
+    thead: {
+      color: `#fff`,
+    },
+
+    td: {
+      padding: `0.5em 1em`,
+      color: `#fff`,
+    },
+
+    footnote: {
+      color: `rgba(0,0,0,0.5)`,
+    },
+
+    figcaption: {
+      color: `#fff`,
+    },
+  },
+})
+
 export const themeMap = {
   default: defaultTheme,
   grace: graceTheme,
+  blogger: bloggerTheme,
 }
 
 export const themeOptions: IConfigOption<keyof typeof themeMap>[] = [
@@ -445,6 +611,11 @@ export const themeOptions: IConfigOption<keyof typeof themeMap>[] = [
   {
     label: `优雅`,
     value: `grace`,
+    desc: ``,
+  },
+  {
+    label: `博客`,
+    value: `blogger`,
     desc: ``,
   },
 ]
