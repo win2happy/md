@@ -1,12 +1,12 @@
-import type { ReadTimeResults } from 'reading-time'
 import DEFAULT_CONTENT from '@/assets/example/markdown.md?raw'
 import DEFAULT_CSS_CONTENT from '@/assets/example/theme-css.txt?raw'
 import { altKey, codeBlockThemeOptions, colorOptions, fontFamilyOptions, fontSizeOptions, legendOptions, shiftKey, themeMap, themeOptions } from '@/config'
 import { addPrefix, css2json, customCssWithTemplate, customizeTheme, downloadMD, exportHTML, formatDoc } from '@/utils'
-
 import { initRenderer } from '@/utils/renderer'
 import CodeMirror from 'codemirror'
 import { marked } from 'marked'
+import type { ReadTimeResults } from 'reading-time'
+
 
 export const useStore = defineStore(`store`, () => {
   // 是否开启深色模式
@@ -32,6 +32,14 @@ export const useStore = defineStore(`store`, () => {
   // 是否开启段落首行缩进
   const isUseIndent = useStorage(addPrefix(`use_indent`), false)
   const toggleUseIndent = useToggle(isUseIndent)
+
+  // 是否显示宽屏模式
+  const isMonitorSmartphone = useStorage(`isMonitorSmartphone`, true)
+  const toggleisMonitorSmartphone = useToggle(isMonitorSmartphone)
+
+  // 显示模式
+  const showMode = useStorage(`showMode`, 'splitMode')
+  const showModeString = useToString(isMonitorSmartphone)
 
   const output = ref(``)
 
@@ -435,6 +443,12 @@ export const useStore = defineStore(`store`, () => {
   return {
     isDark,
     toggleDark,
+
+    isMonitorSmartphone,
+    toggleisMonitorSmartphone,
+
+    showMode,
+    showModeString,
 
     isEditOnLeft,
     toggleEditOnLeft,
