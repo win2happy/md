@@ -1,7 +1,6 @@
 import { giteeConfig, githubConfig } from '@/config'
 import fetch from '@/utils/fetch'
 import * as tokenTools from '@/utils/tokenTools'
-
 import { base64encode, safe64, utf16to8 } from '@/utils/tokenTools'
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import Buffer from 'buffer-from'
@@ -11,6 +10,7 @@ import * as Minio from 'minio'
 import * as qiniu from 'qiniu-js'
 import OSS from 'tiny-oss'
 import { v4 as uuidv4 } from 'uuid'
+
 
 function getConfig(useDefault: boolean, platform: string) {
   if (useDefault) {
@@ -414,6 +414,7 @@ async function formCustomUpload(content: string, file: File) {
       ${localStorage.getItem(`formCustomConfig`)}
     }
   `
+  debugger;
   return new Promise<string>((resolve, reject) => {
     const exportObj = {
       content, // 待上传图片的 base64
@@ -442,6 +443,7 @@ async function formCustomUpload(content: string, file: File) {
 }
 
 function fileUpload(content: string, file: File) {
+  debugger;
   const imgHost = localStorage.getItem(`imgHost`)
   if (!imgHost) {
     localStorage.setItem(`imgHost`, `default`)

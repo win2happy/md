@@ -218,3 +218,21 @@ export const legendOptions = [
     desc: ``,
   },
 ]
+
+export const tablePositionOptions = [
+  {
+    label: `居左`,
+    value: `table-left`,
+    desc: ``,
+  },
+  {
+    label: `居中`,
+    value: `table-center`,
+    desc: ``,
+  },
+  {
+    label: `居右`,
+    value: `table-right`,
+    desc: ``,
+  },
+]

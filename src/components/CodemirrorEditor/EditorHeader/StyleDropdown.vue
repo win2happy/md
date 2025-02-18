@@ -5,6 +5,7 @@ import {
   fontFamilyOptions,
   fontSizeOptions,
   legendOptions,
+  tablePositionOptions,
   themeOptions,
 } from '@/config'
 import { useDisplayStore, useStore } from '@/stores'
@@ -20,6 +21,7 @@ const {
   primaryColor,
   codeBlockTheme,
   legend,
+  tablePosition,
   isMacCodeBlock,
   cssEditor,
 } = storeToRefs(store)
@@ -32,6 +34,7 @@ const {
   colorChanged,
   codeBlockThemeChanged,
   legendChanged,
+  tableChanged,
   macCodeBlockChanged,
 } = store
 
@@ -82,6 +85,12 @@ const formatOptions = ref<Format[]>([`rgb`, `hex`, `hsl`, `hsv`])
         :options="colorOptions"
         :current="primaryColor"
         :change="colorChanged"
+      />
+      <StyleOptionMenu
+        title="表格位置"
+        :options="tablePositionOptions"
+        :current="tablePosition"
+        :change="tableChanged"
       />
       <StyleOptionMenu
         title="代码块主题"

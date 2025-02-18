@@ -12,7 +12,7 @@ import CodeMirror from 'codemirror'
 
 const store = useStore()
 const displayStore = useDisplayStore()
-const { isDark, output, editor, readingTime } = storeToRefs(store)
+const { isDark, output, editor, readingTime, isMonitorSmartphone } = storeToRefs(store)
 
 const {
   editorRefresh,
@@ -128,6 +128,7 @@ function beforeUpload(file: File) {
 
 // 图片上传结束
 function uploaded(imageUrl: string) {
+  debugger;
   if (!imageUrl) {
     toast.error(`上传图片未知异常`)
     return
@@ -377,6 +378,8 @@ onMounted(() => {
           :class="{
             'order-1 border-l': !store.isEditOnLeft,
             'border-r': store.isEditOnLeft,
+            'show-screen': store.showMode === 'editMode',
+            'hide-screen': store.showMode === 'readMode',
           }"
         >
           <ContextMenu>
@@ -418,9 +421,19 @@ onMounted(() => {
           id="preview"
           ref="preview"
           class="preview-wrapper flex-1 p-5"
+          :class="{
+            'split-screen': store.showMode === 'splitMode',
+            'hide-screen': store.showMode === 'editMode',
+            'show-screen': store.showMode === 'readMode',
+          }"
         >
-          <div id="output-wrapper" :class="{ output_night: !backLight }">
-            <div class="preview border-x-1 shadow-xl">
+          <div id="output-wrapper" :class="{ output_night: !backLight,  
+            'hide-screen': store.showMode === 'editMode',
+            'show-screen': store.showMode === 'readMode',}">
+            <div class="preview border-x-1 shadow-xl" :class="{
+              'preview-full-width': store.isMonitorSmartphone,
+              'preview-width': !store.isMonitorSmartphone,
+            }">
               <section id="output" v-html="output" />
               <div v-if="isCoping" class="loading-mask">
                 <div class="loading-mask-box">
@@ -486,6 +499,9 @@ onMounted(() => {
   position: relative;
   user-select: text;
   height: 100%;
+  width: 100%;
+  text-align: center;
+  text-align: -webkit-center;
 }
 
 .loading-mask {

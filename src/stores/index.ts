@@ -1,12 +1,12 @@
-import type { ReadTimeResults } from 'reading-time'
 import DEFAULT_CONTENT from '@/assets/example/markdown.md?raw'
 import DEFAULT_CSS_CONTENT from '@/assets/example/theme-css.txt?raw'
-import { altKey, codeBlockThemeOptions, colorOptions, fontFamilyOptions, fontSizeOptions, legendOptions, shiftKey, themeMap, themeOptions } from '@/config'
+import { altKey, codeBlockThemeOptions, colorOptions, fontFamilyOptions, fontSizeOptions, legendOptions, shiftKey, tablePositionOptions, themeMap, themeOptions } from '@/config'
 import { addPrefix, css2json, customCssWithTemplate, customizeTheme, downloadMD, exportHTML, formatDoc } from '@/utils'
-
 import { initRenderer } from '@/utils/renderer'
 import CodeMirror from 'codemirror'
 import { marked } from 'marked'
+import type { ReadTimeResults } from 'reading-time'
+
 
 export const useStore = defineStore(`store`, () => {
   // 是否开启深色模式
@@ -33,6 +33,14 @@ export const useStore = defineStore(`store`, () => {
   const isUseIndent = useStorage(addPrefix(`use_indent`), false)
   const toggleUseIndent = useToggle(isUseIndent)
 
+  // 是否显示宽屏模式
+  const isMonitorSmartphone = useStorage(`isMonitorSmartphone`, true)
+  const toggleisMonitorSmartphone = useToggle(isMonitorSmartphone)
+
+  // 显示模式
+  const showMode = useStorage(`showMode`, 'splitMode')
+  const showModeString = useToString(isMonitorSmartphone)
+
   const output = ref(``)
 
   // 文本字体
@@ -47,6 +55,8 @@ export const useStore = defineStore(`store`, () => {
   const codeBlockTheme = useStorage(`codeBlockTheme`, codeBlockThemeOptions[23].value)
   // 图注格式
   const legend = useStorage(`legend`, legendOptions[3].value)
+  // 表格位置
+  const tablePosition = useStorage(`tablePosition`, tablePositionOptions[1].value)
 
   const fontSizeNumber = computed(() => Number(fontSize.value.replace(`px`, ``)))
 
@@ -186,7 +196,7 @@ export const useStore = defineStore(`store`, () => {
   // 更新编辑器
   const editorRefresh = () => {
     codeThemeChange()
-    renderer.reset({ citeStatus: isCiteStatus.value, legend: legend.value, isUseIndent: isUseIndent.value, countStatus: isCountStatus.value })
+    renderer.reset({ citeStatus: isCiteStatus.value, legend: legend.value, tablePosition: tablePosition.value, isUseIndent: isUseIndent.value, countStatus: isCountStatus.value })
 
     const { markdownContent, readingTime: readingTimeResult } = renderer.parseFrontMatterAndContent(editor.value!.getValue())
     readingTime.value = readingTimeResult
@@ -297,6 +307,7 @@ export const useStore = defineStore(`store`, () => {
     primaryColor.value = colorOptions[0].value
     codeBlockTheme.value = codeBlockThemeOptions[23].value
     legend.value = legendOptions[3].value
+    tablePosition.value = tablePositionOptions[1].value
 
     cssContentConfig.value = {
       active: `方案 1`,
@@ -372,6 +383,11 @@ export const useStore = defineStore(`store`, () => {
     legend.value = newVal
   })
 
+  const tableChanged = withAfterRefresh((newVal) => {
+    tablePosition.value = newVal
+    location.reload(); // 刷新页面 todo:
+  })
+
   const macCodeBlockChanged = withAfterRefresh(() => {
     toggleMacCodeBlock()
   })
@@ -436,6 +452,12 @@ export const useStore = defineStore(`store`, () => {
     isDark,
     toggleDark,
 
+    isMonitorSmartphone,
+    toggleisMonitorSmartphone,
+
+    showMode,
+    showModeString,
+
     isEditOnLeft,
     toggleEditOnLeft,
 
@@ -458,6 +480,7 @@ export const useStore = defineStore(`store`, () => {
     codeBlockTheme,
     legend,
     readingTime,
+    tablePosition,
 
     editorRefresh,
 
@@ -467,6 +490,7 @@ export const useStore = defineStore(`store`, () => {
     colorChanged,
     codeBlockThemeChanged,
     legendChanged,
+    tableChanged,
     macCodeBlockChanged,
 
     formatContent,

@@ -8,7 +8,7 @@ import {
 } from '@/config'
 import { useStore } from '@/stores'
 import { addPrefix, processClipboardContent } from '@/utils'
-import { ChevronDownIcon, Moon, PanelLeftClose, PanelLeftOpen, Settings, Sun } from 'lucide-vue-next'
+import { ChevronDownIcon, Moon, PanelLeftClose, PanelLeftOpen, Settings, Sun, Smartphone, MonitorSmartphone, Grip} from 'lucide-vue-next'
 
 const emit = defineEmits([`addFormat`, `formatContent`, `startCopy`, `endCopy`])
 
@@ -47,13 +47,20 @@ const formatItems = [
 
 const store = useStore()
 
-const { isDark, isCiteStatus, isCountStatus, output, primaryColor, isOpenPostSlider } = storeToRefs(store)
+const { isDark, isCiteStatus, isCountStatus, output, primaryColor, isOpenPostSlider, isMonitorSmartphone } = storeToRefs(store)
 
-const { toggleDark, editorRefresh, citeStatusChanged, countStatusChanged } = store
+const { toggleDark, editorRefresh, citeStatusChanged, countStatusChanged, toggleisMonitorSmartphone } = store
 
 const copyMode = useStorage(addPrefix(`copyMode`), `txt`)
+const showMode = useStorage(addPrefix(`showMode`), `splitMode`)
 const source = ref(``)
 const { copy: copyContent } = useClipboard({ source })
+
+// 显示模式
+function mode() {
+  store.showMode = showMode.value
+  useStorage(addPrefix(`showMode`), showMode.value)
+}
 
 // 复制到微信公众号
 function copy() {
@@ -141,6 +148,38 @@ function copy() {
     </div>
 
     <div class="space-x-2 flex">
+      <div class="space-x-1 bg-background text-background-foreground mx-2 flex items-center border rounded-md">
+        <DropdownMenu v-model="showMode">
+          <DropdownMenuTrigger as-child>
+            <Button variant="ghost" class="px-2 shadow-none">
+              <Grip class="text-secondary-foreground h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            :align-offset="-5"
+            class="w-[200px]"
+          >
+            <DropdownMenuRadioGroup v-model="showMode">
+              <DropdownMenuRadioItem value="splitMode" @click="mode">
+                分屏模式
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="editMode" @click="mode">
+                编辑模式
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="readMode" @click="mode">
+                阅读模式
+              </DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      <Button variant="outline" @click="toggleisMonitorSmartphone(store.isMonitorSmartphone = !store.isMonitorSmartphone)">
+        <Smartphone v-show="!isMonitorSmartphone" class="size-4" />
+        <MonitorSmartphone v-show="isMonitorSmartphone" class="size-4" />
+      </Button>
+
       <TooltipProvider :delay-duration="200">
         <Tooltip>
           <TooltipTrigger as-child>

@@ -1,19 +1,19 @@
 import type { ExtendedProperties, IOpts, ThemeStyles } from '@/types'
 import type { PropertiesHyphen } from 'csstype'
-import type { Renderer, RendererObject, Tokens } from 'marked'
-import type { ReadTimeResults } from 'reading-time'
 import { cloneDeep, toMerged } from 'es-toolkit'
 import frontMatter from 'front-matter'
-
 import hljs from 'highlight.js'
+import type { Renderer, RendererObject, Tokens } from 'marked'
 import { marked } from 'marked'
 import mermaid from 'mermaid'
+import type { ReadTimeResults } from 'reading-time'
 import readingTime from 'reading-time'
-
 import { getStyleString } from '.'
 import markedAlert from './MDAlert'
-
 import { MDKatex } from './MDKatex'
+
+
+
 
 marked.setOptions({
   breaks: true,
@@ -312,8 +312,12 @@ export function initRenderer(opts: IOpts) {
           return styledContent(`tr`, rowContent)
         })
         .join(``)
+
+      // 从 localStorage 获取 tablePosition
+      const tablePosition = localStorage.getItem('tablePosition') || 'table-center'; // 提供默认值
+
       return `
-        <section style="padding:0 8px; max-width: 100%; overflow: auto">
+        <section style="padding:0 8px; max-width: 100%; overflow: auto;" class="${tablePosition}">
           <table class="preview-table">
             <thead ${styles(`thead`)}>${headerRow}</thead>
             <tbody>${body}</tbody>
