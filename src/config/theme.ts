@@ -529,8 +529,10 @@ const bloggerTheme = toMerged(defaultTheme, {
       'padding-left': `1.5em`,
     },
 
-    'footnotes': {
-
+    footnotes: {
+      'margin': `0.5em 8px`,
+      'font-size': `80%`,
+      'color': `white`,
     },
 
     'figure': {
