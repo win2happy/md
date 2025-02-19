@@ -197,7 +197,7 @@ export function initRenderer(opts: IOpts) {
     }
 
     return (
-      styledContent(`h4`, `引用链接`)
+      styledContent(`h2`, `引用链接`)
       + styledContent(`footnotes`, buildFootnoteArray(footnotes), `p`)
     )
   }

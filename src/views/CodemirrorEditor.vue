@@ -498,8 +498,8 @@ onMounted(() => {
 #output-wrapper {
   position: relative;
   user-select: text;
-  height: 100%;
   width: 100%;
+  height: 100%;
   text-align: center;
   text-align: -webkit-center;
 }
