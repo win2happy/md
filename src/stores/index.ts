@@ -406,13 +406,18 @@ export const useStore = defineStore(`store`, () => {
 
   // 导出编辑器内容为 HTML，并且下载到本地
   const exportEditorContent2HTML = () => {
-    exportHTML(primaryColor.value)
+    exportHTML(primaryColor.value, getCurrentContentTitle(`.html`))
     document.querySelector(`#output`)!.innerHTML = output.value
   }
 
   // 导出编辑器内容到本地
   const exportEditorContent2MD = () => {
-    downloadMD(editor.value!.getValue())
+    downloadMD(editor.value!.getValue(), getCurrentContentTitle(`.md`))
+  }
+
+  //获取当前内容的标题
+  const getCurrentContentTitle = (format: string) => {
+    return posts.value[currentPostIndex.value].title + format
   }
 
   // 导入 Markdown 文档
