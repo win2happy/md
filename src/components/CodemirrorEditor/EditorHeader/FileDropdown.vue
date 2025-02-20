@@ -12,6 +12,7 @@ const {
 const {
   exportEditorContent2HTML,
   exportEditorContent2MD,
+  exportAllContent2MD,
   importMarkdownContent,
 } = store
 </script>
@@ -33,6 +34,10 @@ const {
       <MenubarItem @click="exportEditorContent2HTML()">
         <FileCode class="mr-2 size-4" />
         导出 .html
+      </MenubarItem>
+      <MenubarItem @click="exportAllContent2MD()">
+        <Download class="mr-2 size-4" />
+        导出所有文档 .md
       </MenubarItem>
       <MenubarSeparator />
       <MenubarCheckboxItem v-model:checked="isDark">

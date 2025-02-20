@@ -415,6 +415,19 @@ export const useStore = defineStore(`store`, () => {
     downloadMD(editor.value!.getValue(), getCurrentContentTitle(`.md`))
   }
 
+  // 导出所有内容到本地
+  const exportAllContent2MD = async () => {
+    for(var index=0; index<posts.value.length; index++) {
+      var currentPost = posts.value[index]
+      downloadMD(currentPost.content, currentPost.title + `.md`)
+      await wait(2000); // 等待2秒
+    }
+  }
+
+  const wait = (ms: number) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+};
+
   //获取当前内容的标题
   const getCurrentContentTitle = (format: string) => {
     return posts.value[currentPostIndex.value].title + format
@@ -501,6 +514,7 @@ export const useStore = defineStore(`store`, () => {
     formatContent,
     exportEditorContent2HTML,
     exportEditorContent2MD,
+    exportAllContent2MD,
 
     importMarkdownContent,
 
