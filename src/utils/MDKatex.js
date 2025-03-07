@@ -13,6 +13,7 @@ function createRenderer(display) {
     svg.style = `max-width: 300vw !important;`
     svg.style.width = width
     svg.style.display = `initial`
+    svg.style.color = `var(--md-primary-color)`
     if (display) {
       return `<section style="text-align: center; overflow: auto;">${svg.outerHTML}</section>`
     }

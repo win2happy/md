@@ -236,7 +236,6 @@ export const useStore = defineStore(`store`, () => {
         }
       </style>
     `
-
     output.value = renderer.createContainer(outputTemp)
   }
 
@@ -422,6 +421,7 @@ export const useStore = defineStore(`store`, () => {
       downloadMD(currentPost.content, currentPost.title + `.md`)
       await wait(2000); // 等待2秒
     }
+    toast.success(`所有文档导出完成`)
   }
 
   const wait = (ms: number) => {

@@ -84,6 +84,60 @@
       if (theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.querySelector('.loading').classList.add('dark')
       }
+      function toggleContent(button, tag, depth) {
+        console.log(tag)
+        // 获取当前的h1标签
+        const node = button.closest(tag);
+        // 获取所有collapsed的节点
+        // const allCollapsed = document.querySelectorAll('.collapsed');
+        // 获取node后面的所有兄弟节点
+        let nextSibling = node.nextElementSibling;
+        let isFirst = true;
+        const isCollapsed = false;
+        if (isFirst) {
+            const isCollapsed = nextSibling.classList.contains('collapsed');
+            console.log('当前状态:', isCollapsed ? 'collapsed' : 'expanded');
+            isFirst = false;
+          }
+        // 切换显示状态
+        while (nextSibling) {
+          if (isFirst) {
+            const isCollapsed = nextSibling.classList.contains('collapsed');
+            console.log('当前状态:', isCollapsed ? 'collapsed' : 'expanded');
+            // if(isCollapsed) {
+
+            // }
+          //   for(var i=0; i<allCollapsed.length; i++) {
+          //     const curr = allCollapsed[i];
+          //     const currTag = curr.tagName;
+          //     let level = parseInt(currTag.replace(/[^\d]/g, '', ''));
+          //     if (!isCollapsed) {
+          //       curr.classList.remove('collapsed');
+          //     }
+          //   }
+            isFirst = false;
+          }
+
+          let level = parseInt(nextSibling.tagName.replace(/[^\d]/g, '', ''))
+            if (level <= depth) {
+                // 遇到下一个node标签时停止
+                break;
+            }
+            // 切换collapsed类以控制显示与否
+            if (!isCollapsed) {
+              nextSibling.classList.toggle('collapsed');
+            }
+            nextSibling = nextSibling.nextElementSibling;
+        }
+      }
+      function areNotSiblings(element1, element2) {
+        // 获取两个元素的父节点
+        const parent1 = element1.parentNode;
+        const parent2 = element2.parentNode;
+
+        // 比较父节点
+        return parent1 !== parent2;
+    }
     </script>
     <script>
       window.MathJax = {

@@ -566,7 +566,7 @@ const bloggerTheme = toMerged(defaultTheme, {
     },
 
     strong: {
-      color: `#fff`,
+      color: `var(--md-primary-color)`,
     },
 
     table: {

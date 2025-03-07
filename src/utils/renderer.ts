@@ -206,7 +206,12 @@ export function initRenderer(opts: IOpts) {
     heading({ tokens, depth }: Tokens.Heading) {
       const text = this.parser.parseInline(tokens)
       const tag = `h${depth}`
-      return styledContent(tag, text)
+      // if (depth < 4) {
+      //   const htext: string = `<button onclick="toggleContent(this, '${tag}', ${depth})">${text}</button>`
+      //   return styledContent(tag, htext)
+      // } else {
+        return styledContent(tag, text)
+      // }
     },
 
     paragraph({ tokens }: Tokens.Paragraph): string {
