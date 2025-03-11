@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ComponentPublicInstance } from 'vue'
-import { altKey, altSign, ctrlKey, shiftKey, shiftSign } from '@/config'
+import { altKey, altSign, ctrlKey, ctrlSign, shiftKey, shiftSign } from '@/config'
 import { useDisplayStore, useStore } from '@/stores'
 import {
   checkImage,
@@ -19,6 +19,7 @@ const {
   exportEditorContent2HTML,
   exportEditorContent2MD,
   formatContent,
+  copyContent,
   importMarkdownContent,
   resetStyleConfirm,
 } = store
@@ -209,6 +210,20 @@ function initEditor() {
       [`${ctrlKey}-E`]: function code(editor) {
         const selected = editor.getSelection()
         editor.replaceSelection(`\`${selected}\``)
+      },
+      [`${ctrlKey}-C`]: function code(editor) {
+        formatDoc(editor.getValue()).then((doc) => {
+          // 使用剪贴板 API
+          navigator.clipboard.writeText(doc)
+              .then(() => {
+                toast.success(
+                  '内容已复制到剪贴板'
+                )
+              })
+              .catch(err => {
+                  console.error('复制失败:', err);
+              })
+        })
       },
       // 预备弃用
       [`${ctrlKey}-L`]: function code(editor) {
@@ -413,6 +428,10 @@ onMounted(() => {
               <ContextMenuItem inset @click="formatContent()">
                 格式化
                 <ContextMenuShortcut>{{ altSign }} + {{ shiftSign }} + F</ContextMenuShortcut>
+              </ContextMenuItem>
+              <ContextMenuItem inset @click="copyContent()">
+                复制
+                <ContextMenuShortcut>{{ ctrlSign }} + C</ContextMenuShortcut>
               </ContextMenuItem>
             </ContextMenuContent>
           </ContextMenu>

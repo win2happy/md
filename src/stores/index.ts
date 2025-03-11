@@ -113,6 +113,22 @@ export const useStore = defineStore(`store`, () => {
     })
   }
 
+  // 复制文档
+  const copyContent = () => {
+    formatDoc((editor.value!).getValue()).then((doc) => {
+      // 使用剪贴板 API
+      navigator.clipboard.writeText(doc)
+          .then(() => {
+            toast.success(
+              '内容已复制到剪贴板'
+            )
+          })
+          .catch(err => {
+              console.error('复制失败:', err);
+          })
+    })
+  }
+
   // 切换 highlight.js 代码主题
   const codeThemeChange = () => {
     const cssUrl = codeBlockTheme.value
@@ -512,6 +528,7 @@ export const useStore = defineStore(`store`, () => {
     macCodeBlockChanged,
 
     formatContent,
+    copyContent,
     exportEditorContent2HTML,
     exportEditorContent2MD,
     exportAllContent2MD,
