@@ -4,7 +4,7 @@
 
 </div>
 
-<h1 align="center">微信 Markdown 编辑器</h1>
+<h1 align="center">Markdown 编辑器</h1>
 
 <div align="center">
 
@@ -25,9 +25,9 @@ Markdown 文档自动即时渲染为微信图文，让你不再为微信内容�
 
 ## 为何二次开发
 
-现有的开源微信 Markdown 编辑器，样式繁杂，也不符合我个人的审美需求。在我使用它们进行内容排版的时候，经常还要自己做一些改动，费时费力，因此动手做了二次开发。
+现有的开源 Markdown 编辑器，样式繁杂，也不符合我个人的审美需求。在我使用它们进行内容排版的时候，经常还要自己做一些改动，费时费力，因此动手做了二次开发。
 
-欢迎各位朋友随时提交 PR，让这款微信 Markdown 编辑器变得更好！如果你有新的想法，也欢迎在 [Discussions 讨论区](https://github.com/doocs/md/discussions)反馈。
+欢迎各位朋友随时提交 PR，让这款 Markdown 编辑器变得更好！如果你有新的想法，也欢迎在 [Discussions 讨论区](https://github.com/doocs/md/discussions)反馈。
 
 注：我们项目最新版本基于 Vue3 开发，基于 Vue2 的旧版本已经不再维护，如果你需要 Vue2 版本，请切换到 [1.x](https://github.com/doocs/md/tree/1.x) 分支。
 
@@ -136,7 +136,7 @@ npm run build:h5-netlify
 
 ### 方式 1. 使用 npm cli
 
-通过我们的 npm cli 你可以轻易搭建属于自己的微信 Markdown 编辑器。
+通过我们的 npm cli 你可以轻易搭建属于自己的 Markdown 编辑器。
 
 ```sh
 # 安装

@@ -32,7 +32,7 @@ function onRedirect(url: string) {
         <DialogTitle>关于</DialogTitle>
       </DialogHeader>
       <div class="text-center">
-        <h3>一款高度简洁的微信 Markdown 编辑器</h3>
+        <h3>一款高度简洁的 Markdown 编辑器</h3>
         <p>扫码关注公众号 Doocs，原创技术内容第一时间推送！</p>
         <img
           class="mx-auto my-5"
