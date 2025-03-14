@@ -147,7 +147,7 @@ function copy() {
       </Menubar>
     </div>
 
-    <div class="space-x-2 flex">
+    <div class="space-x-2 flex right">
       <div class="space-x-1 bg-background text-background-foreground mx-2 flex items-center border rounded-md">
         <DropdownMenu v-model="showMode">
           <DropdownMenuTrigger as-child>
@@ -227,7 +227,7 @@ function copy() {
         </DropdownMenu>
       </div>
 
-      <PostInfo />
+      <!-- <PostInfo />-->
 
       <Button variant="outline" @click="store.isOpenRightSlider = !store.isOpenRightSlider">
         <Settings class="size-4" />
@@ -251,4 +251,20 @@ kbd {
   padding: 1px 4px;
   border-radius: 2px;
 }
+
+// @media (max-width: 768px) { /* 768px 可以调整为你需要的最小屏幕宽度 */
+//     .container {
+//         flex-wrap: wrap;
+//         margin-bottom: 30px;
+//         height: auto;
+//     }
+// }
+.header-container {
+        flex-wrap: wrap;
+        margin-bottom: 5px;
+        height: auto;
+        .right {
+          flex-wrap: wrap;
+        }
+    }
 </style>
