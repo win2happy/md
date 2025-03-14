@@ -7,6 +7,7 @@ import {
   legendOptions,
   themeOptions,
   tablePositionOptions,
+  linkOptions,
 } from '@/config'
 import { useDisplayStore, useStore } from '@/stores'
 import { Moon, Sun } from 'lucide-vue-next'
@@ -127,6 +128,18 @@ const formatOptions = ref<Format[]>([`rgb`, `hex`, `hsl`, `hsv`])
             v-for="{ label, value } in tablePositionOptions" :key="value" class="w-full" variant="outline" :class="{
               'border-black dark:border-white': store.tablePosition === value,
             }" @click="store.tableChanged(value)"
+          >
+            {{ label }}
+          </Button>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <h2>超链接</h2>
+        <div class="grid grid-cols-3 justify-items-center gap-2">
+          <Button
+            v-for="{ label, value } in linkOptions" :key="value" class="w-full" variant="outline" :class="{
+              'border-black dark:border-white': store.linkShow === value,
+            }" @click="store.linkChanged(value)"
           >
             {{ label }}
           </Button>

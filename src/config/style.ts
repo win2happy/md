@@ -236,3 +236,16 @@ export const tablePositionOptions = [
     desc: ``,
   },
 ]
+
+export const linkOptions = [
+  {
+    label: `显示`,
+    value: `1`,
+    desc: ``,
+  },
+  {
+    label: `不显示`,
+    value: `0`,
+    desc: ``,
+  },
+]

@@ -26,6 +26,7 @@ export interface IOpts {
   isUseIndent: boolean
   legend?: string
   tablePosition?: string
+  linkShow?: string
   citeStatus?: boolean
   countStatus?: boolean
 }

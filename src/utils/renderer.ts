@@ -82,7 +82,17 @@ function getStyles(styleMapping: ThemeStyles, tokenName: string, addition: strin
   return `style="${styles}${addition}"`
 }
 
-function buildFootnoteArray(footnotes: [number, string, string][]): string {
+function buildFootnoteArray(footnotes: [number, string, string][], linkShow: string): string {
+  if (isLinkShow(linkShow)) {
+    return footnotes
+    .map(([index, title, link]) =>
+      link === title
+        ? `<code style="font-size: 90%; opacity: 0.6;">[${index}]</code>: <i style="word-break: break-all">${title}</i><br/>`
+        : `<code style="font-size: 90%; opacity: 0.6;">[${index}]</code> ${title}: <i style="word-break: break-all">
+           <a style="color: var(--md-primary-color); font-weight: bolder; cursor: pointer;" href="${link}" target="_blank">${link}</a></i><br/>`,
+    )
+    .join(`\n`)
+  }
   return footnotes
     .map(([index, title, link]) =>
       link === title
@@ -90,6 +100,11 @@ function buildFootnoteArray(footnotes: [number, string, string][]): string {
         : `<code style="font-size: 90%; opacity: 0.6;">[${index}]</code> ${title}: <i style="word-break: break-all">${link}</i><br/>`,
     )
     .join(`\n`)
+}
+
+function isLinkShow(linkShow: string) {
+  if (linkShow == '1') return true
+  return false
 }
 
 function transform(legend: string, text: string | null, title: string | null): string {
@@ -192,13 +207,14 @@ export function initRenderer(opts: IOpts) {
   }
 
   const buildFootnotes = () => {
+    let linkShow = opts.linkShow
     if (!footnotes.length) {
       return ``
     }
 
     return (
       styledContent(`h2`, `引用链接`)
-      + styledContent(`footnotes`, buildFootnoteArray(footnotes), `p`)
+      + styledContent(`footnotes`, buildFootnoteArray(footnotes, linkShow), `p`)
     )
   }
 
@@ -283,6 +299,7 @@ export function initRenderer(opts: IOpts) {
     },
 
     link({ href, title, text, tokens }: Tokens.Link): string {
+      debugger
       const parsedText = this.parser.parseInline(tokens)
       if (href.startsWith(`https://mp.weixin.qq.com`)) {
         return `<a href="${href}" title="${title || text}" ${styles(`wx_link`)}>${parsedText}</a>`
@@ -292,6 +309,9 @@ export function initRenderer(opts: IOpts) {
       }
       if (opts.citeStatus) {
         const ref = addFootnote(title || text, href)
+        if (isLinkShow(opts.linkShow)) {
+          return `<a href="${href}" title="${title || text}" target="_blank" ${styles(`wx_link`)}><span ${styles(`link`)}>${parsedText}<sup>[${ref}]</sup></span></a>`
+        }
         return `<span ${styles(`link`)}>${parsedText}<sup>[${ref}]</sup></span>`
       }
       return styledContent(`link`, parsedText, `span`)
@@ -319,7 +339,8 @@ export function initRenderer(opts: IOpts) {
         .join(``)
 
       // 从 localStorage 获取 tablePosition
-      const tablePosition = localStorage.getItem('tablePosition') || 'table-center'; // 提供默认值
+      // const tablePosition = localStorage.getItem('tablePosition') || 'table-center'; // 提供默认值
+      const tablePosition = opts.tablePosition || 'table-center'; // 提供默认值
 
       return `
         <section style="padding:0 8px; max-width: 100%; overflow: auto;" class="${tablePosition}">

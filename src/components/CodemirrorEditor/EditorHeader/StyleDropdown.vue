@@ -6,6 +6,7 @@ import {
   fontSizeOptions,
   legendOptions,
   tablePositionOptions,
+  linkOptions,
   themeOptions,
 } from '@/config'
 import { useDisplayStore, useStore } from '@/stores'
@@ -22,6 +23,7 @@ const {
   codeBlockTheme,
   legend,
   tablePosition,
+  linkShow,
   isMacCodeBlock,
   cssEditor,
 } = storeToRefs(store)
@@ -35,6 +37,7 @@ const {
   codeBlockThemeChanged,
   legendChanged,
   tableChanged,
+  linkChanged,
   macCodeBlockChanged,
 } = store
 
@@ -91,6 +94,12 @@ const formatOptions = ref<Format[]>([`rgb`, `hex`, `hsl`, `hsv`])
         :options="tablePositionOptions"
         :current="tablePosition"
         :change="tableChanged"
+      />
+      <StyleOptionMenu
+        title="超链接"
+        :options="linkOptions"
+        :current="linkShow"
+        :change="linkChanged"
       />
       <StyleOptionMenu
         title="代码块主题"

@@ -1,6 +1,6 @@
 import DEFAULT_CONTENT from '@/assets/example/markdown.md?raw'
 import DEFAULT_CSS_CONTENT from '@/assets/example/theme-css.txt?raw'
-import { altKey, codeBlockThemeOptions, colorOptions, fontFamilyOptions, fontSizeOptions, legendOptions, shiftKey, tablePositionOptions, themeMap, themeOptions } from '@/config'
+import { altKey, codeBlockThemeOptions, colorOptions, fontFamilyOptions, fontSizeOptions, legendOptions, linkOptions, shiftKey, tablePositionOptions, themeMap, themeOptions } from '@/config'
 import { addPrefix, css2json, customCssWithTemplate, customizeTheme, downloadMD, exportHTML, formatDoc } from '@/utils'
 import { initRenderer } from '@/utils/renderer'
 import CodeMirror from 'codemirror'
@@ -57,6 +57,8 @@ export const useStore = defineStore(`store`, () => {
   const legend = useStorage(`legend`, legendOptions[3].value)
   // 表格位置
   const tablePosition = useStorage(`tablePosition`, tablePositionOptions[1].value)
+  // 超链接
+  const linkShow = useStorage(`linkShow`, linkOptions[1].value)
 
   const fontSizeNumber = computed(() => Number(fontSize.value.replace(`px`, ``)))
 
@@ -205,6 +207,8 @@ export const useStore = defineStore(`store`, () => {
     fonts: fontFamily.value,
     size: fontSize.value,
     isUseIndent: isUseIndent.value,
+    tablePosition: tablePosition.value,
+    linkShow: linkShow.value,
   })
 
   const readingTime = ref<ReadTimeResults | null>(null)
@@ -212,7 +216,7 @@ export const useStore = defineStore(`store`, () => {
   // 更新编辑器
   const editorRefresh = () => {
     codeThemeChange()
-    renderer.reset({ citeStatus: isCiteStatus.value, legend: legend.value, tablePosition: tablePosition.value, isUseIndent: isUseIndent.value, countStatus: isCountStatus.value })
+    renderer.reset({ citeStatus: isCiteStatus.value, legend: legend.value, tablePosition: tablePosition.value, linkShow: linkShow.value, isUseIndent: isUseIndent.value, countStatus: isCountStatus.value })
 
     const { markdownContent, readingTime: readingTimeResult } = renderer.parseFrontMatterAndContent(editor.value!.getValue())
     readingTime.value = readingTimeResult
@@ -323,6 +327,7 @@ export const useStore = defineStore(`store`, () => {
     codeBlockTheme.value = codeBlockThemeOptions[23].value
     legend.value = legendOptions[3].value
     tablePosition.value = tablePositionOptions[1].value
+    linkShow.value = linkOptions[1].value
 
     cssContentConfig.value = {
       active: `方案 1`,
@@ -400,7 +405,11 @@ export const useStore = defineStore(`store`, () => {
 
   const tableChanged = withAfterRefresh((newVal) => {
     tablePosition.value = newVal
-    location.reload(); // 刷新页面 todo:
+    // location.reload(); // 刷新页面 todo:
+  })
+
+  const linkChanged = withAfterRefresh((newVal) => {
+    linkShow.value = newVal
   })
 
   const macCodeBlockChanged = withAfterRefresh(() => {
@@ -513,6 +522,7 @@ export const useStore = defineStore(`store`, () => {
     primaryColor,
     codeBlockTheme,
     legend,
+    linkShow,
     readingTime,
     tablePosition,
 
@@ -525,6 +535,7 @@ export const useStore = defineStore(`store`, () => {
     codeBlockThemeChanged,
     legendChanged,
     tableChanged,
+    linkChanged,
     macCodeBlockChanged,
 
     formatContent,

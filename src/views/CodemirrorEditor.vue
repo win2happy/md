@@ -211,7 +211,7 @@ function initEditor() {
         const selected = editor.getSelection()
         editor.replaceSelection(`\`${selected}\``)
       },
-      [`${ctrlKey}-C`]: function code(editor) {
+      [`${ctrlKey}-${altKey}-C`]: function code(editor) {
         formatDoc(editor.getValue()).then((doc) => {
           // 使用剪贴板 API
           navigator.clipboard.writeText(doc)
@@ -431,7 +431,7 @@ onMounted(() => {
               </ContextMenuItem>
               <ContextMenuItem inset @click="copyContent()">
                 复制
-                <ContextMenuShortcut>{{ ctrlSign }} + C</ContextMenuShortcut>
+                <ContextMenuShortcut>{{ ctrlSign }} + {{altSign}} + C</ContextMenuShortcut>
               </ContextMenuItem>
             </ContextMenuContent>
           </ContextMenu>
