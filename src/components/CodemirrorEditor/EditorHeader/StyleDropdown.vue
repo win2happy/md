@@ -6,6 +6,7 @@ import {
   fontSizeOptions,
   legendOptions,
   tablePositionOptions,
+  picOptions,
   linkOptions,
   themeOptions,
 } from '@/config'
@@ -23,6 +24,7 @@ const {
   codeBlockTheme,
   legend,
   tablePosition,
+  picOption,
   linkShow,
   isMacCodeBlock,
   cssEditor,
@@ -39,6 +41,7 @@ const {
   tableChanged,
   linkChanged,
   macCodeBlockChanged,
+  picOptionChanged,
 } = store
 
 const colorPicker = ref<HTMLElement & { show: () => void } | null>(null)
@@ -88,6 +91,12 @@ const formatOptions = ref<Format[]>([`rgb`, `hex`, `hsl`, `hsv`])
         :options="colorOptions"
         :current="primaryColor"
         :change="colorChanged"
+      />
+      <StyleOptionMenu
+        title="图片配置"
+        :options="picOptions"
+        :current="picOption"
+        :change="picOptionChanged"
       />
       <StyleOptionMenu
         title="表格位置"

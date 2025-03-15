@@ -107,6 +107,11 @@ function isLinkShow(linkShow: string) {
   return false
 }
 
+function isShowPicName(picOption: string) {
+  if (picOption == '0') return true
+  return false
+}
+
 function transform(legend: string, text: string | null, title: string | null): string {
   const options = legend.split(`-`)
   for (const option of options) {
@@ -206,6 +211,15 @@ export function initRenderer(opts: IOpts) {
     `
   }
 
+  function extractFilename(url: string): string {
+    // Remove query parameters if any
+    const urlWithoutParams = url.split('?')[0];
+    
+    // Split by '/' and get the last part
+    const parts = urlWithoutParams.split('/');
+    return parts[parts.length - 1];
+  }
+
   const buildFootnotes = () => {
     let linkShow = opts.linkShow
     if (!footnotes.length) {
@@ -292,6 +306,8 @@ export function initRenderer(opts: IOpts) {
     },
 
     image({ href, title, text }: Tokens.Image): string {
+      if (isShowPicName(opts.picOption || '')) return extractFilename(href || '') // 返回文件名
+      
       const subText = styledContent(`figcaption`, transform(opts.legend!, text, title))
       const figureStyles = styles(`figure`)
       const imgStyles = styles(`image`)
@@ -299,7 +315,6 @@ export function initRenderer(opts: IOpts) {
     },
 
     link({ href, title, text, tokens }: Tokens.Link): string {
-      debugger
       const parsedText = this.parser.parseInline(tokens)
       if (href.startsWith(`https://mp.weixin.qq.com`)) {
         return `<a href="${href}" title="${title || text}" ${styles(`wx_link`)}>${parsedText}</a>`
@@ -309,7 +324,7 @@ export function initRenderer(opts: IOpts) {
       }
       if (opts.citeStatus) {
         const ref = addFootnote(title || text, href)
-        if (isLinkShow(opts.linkShow)) {
+        if (isLinkShow(opts.linkShow || '')) {
           return `<a href="${href}" title="${title || text}" target="_blank" ${styles(`wx_link`)}><span ${styles(`link`)}>${parsedText}<sup>[${ref}]</sup></span></a>`
         }
         return `<span ${styles(`link`)}>${parsedText}<sup>[${ref}]</sup></span>`

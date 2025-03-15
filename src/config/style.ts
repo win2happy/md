@@ -249,3 +249,16 @@ export const linkOptions = [
     desc: ``,
   },
 ]
+
+export const picOptions = [
+  {
+    label: `显示图片`,
+    value: `1`,
+    desc: ``,
+  },
+  {
+    label: `显示名称`,
+    value: `0`,
+    desc: ``,
+  },
+]

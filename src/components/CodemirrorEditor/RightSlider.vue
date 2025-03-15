@@ -7,6 +7,7 @@ import {
   legendOptions,
   themeOptions,
   tablePositionOptions,
+  picOptions,
   linkOptions,
 } from '@/config'
 import { useDisplayStore, useStore } from '@/stores'
@@ -119,6 +120,18 @@ const formatOptions = ref<Format[]>([`rgb`, `hex`, `hsl`, `hsv`])
             :popup-container="pickColorsContainer"
             @change="store.colorChanged"
           />
+        </div>
+      </div>
+      <div class="space-y-2">
+        <h2>图片配置</h2>
+        <div class="grid grid-cols-3 justify-items-center gap-2">
+          <Button
+            v-for="{ label, value } in picOptions" :key="value" class="w-full" variant="outline" :class="{
+              'border-black dark:border-white': store.picOption === value,
+            }" @click="store.picOptionChanged(value)"
+          >
+            {{ label }}
+          </Button>
         </div>
       </div>
       <div class="space-y-2">

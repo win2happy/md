@@ -29,6 +29,7 @@ export interface IOpts {
   linkShow?: string
   citeStatus?: boolean
   countStatus?: boolean
+  picOption?: string
 }
 
 export type ThemeStyles = Record<Block | Inline, ExtendedProperties>
