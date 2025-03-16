@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useStore } from '@/stores'
-  import { Edit3, Ellipsis, Plus, Trash } from 'lucide-vue-next'
+  import { Edit3, Ellipsis, Plus, Trash, Copy } from 'lucide-vue-next'
   
   const store = useStore()
   
@@ -118,7 +118,7 @@
               重命名
             </DropdownMenuItem>
             <DropdownMenuItem @click.stop="startCopyPost(index)">
-              <Edit3 class="mr-2 size-4" />
+              <Copy class="mr-2 size-4" />
               复制
             </DropdownMenuItem>
             <DropdownMenuItem v-if="store.posts.length > 1" @click.stop="startDelPost(index)">
