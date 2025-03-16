@@ -45,7 +45,6 @@
       .catch(err => {
         console.error('复制失败:', err);
       })
-  })
   }
   
   function renamePost() {
