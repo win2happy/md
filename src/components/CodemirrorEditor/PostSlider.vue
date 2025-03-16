@@ -1,75 +1,86 @@
 <script setup lang="ts">
-import { useStore } from '@/stores'
-import { Edit3, Ellipsis, Plus, Trash } from 'lucide-vue-next'
-
-const store = useStore()
-
-const isOpen = ref(false)
-
-const addPostInputVal = ref(``)
-
-watch(isOpen, () => {
-  if (isOpen.value) {
-    addPostInputVal.value = ``
+  import { useStore } from '@/stores'
+  import { Edit3, Ellipsis, Plus, Trash } from 'lucide-vue-next'
+  
+  const store = useStore()
+  
+  const isOpen = ref(false)
+  
+  const addPostInputVal = ref(``)
+  
+  watch(isOpen, () => {
+    if (isOpen.value) {
+      addPostInputVal.value = ``
+    }
+  })
+  
+  function addPost() {
+    if (addPostInputVal.value === ``) {
+      toast.error(`内容标题不可为空`)
+      return
+    }
+    store.addPost(addPostInputVal.value)
+    isOpen.value = false
+    toast.success(`内容新增成功`)
   }
-})
-
-function addPost() {
-  if (addPostInputVal.value === ``) {
-    toast.error(`内容标题不可为空`)
-    return
+  
+  const editTarget = ref(-1)
+  const isOpenEditDialog = ref(false)
+  const renamePostInputVal = ref(``)
+  
+  function startRenamePost(index: number) {
+    editTarget.value = index
+    renamePostInputVal.value = store.posts[index].title
+    isOpenEditDialog.value = true
   }
-  store.addPost(addPostInputVal.value)
-  isOpen.value = false
-  toast.success(`内容新增成功`)
-}
-
-const editTarget = ref(-1)
-const isOpenEditDialog = ref(false)
-const renamePostInputVal = ref(``)
-function startRenamePost(index: number) {
-  editTarget.value = index
-  renamePostInputVal.value = store.posts[index].title
-  isOpenEditDialog.value = true
-}
-
-function renamePost() {
-  if (renamePostInputVal.value === ``) {
-    toast.error(`内容标题不可为空`)
-    return
+  
+  function startCopyPost(index: number) {
+    // 使用剪贴板 API
+    navigator.clipboard.writeText(store.posts[index].title)
+      .then(() => {
+        toast.success(
+          '内容已复制到剪贴板'
+        )
+      })
+      .catch(err => {
+        console.error('复制失败:', err);
+      })
+  })
   }
-  store.renamePost(editTarget.value, renamePostInputVal.value)
-  isOpenEditDialog.value = false
-  toast.success(`内容重命名成功`)
-}
-
-const isOpenDelPostConfirmDialog = ref(false)
-function startDelPost(index: number) {
-  editTarget.value = index
-  isOpenDelPostConfirmDialog.value = true
-}
-function delPost() {
-  store.delPost(editTarget.value)
-  isOpenDelPostConfirmDialog.value = false
-  toast.success(`内容删除成功`)
-}
+  
+  function renamePost() {
+    if (renamePostInputVal.value === ``) {
+      toast.error(`内容标题不可为空`)
+      return
+    }
+    store.renamePost(editTarget.value, renamePostInputVal.value)
+    isOpenEditDialog.value = false
+    toast.success(`内容重命名成功`)
+  }
+  
+  const isOpenDelPostConfirmDialog = ref(false)
+  
+  function startDelPost(index: number) {
+    editTarget.value = index
+    isOpenDelPostConfirmDialog.value = true
+  }
+  
+  function delPost() {
+    store.delPost(editTarget.value)
+    isOpenDelPostConfirmDialog.value = false
+    toast.success(`内容删除成功`)
+  }
 </script>
 
 <template>
-  <div
-    class="overflow-hidden bg-gray/20 transition-width duration-300 dark:bg-gray/40"
-    :class="{
+  <div class="overflow-hidden bg-gray/20 transition-width duration-300 dark:bg-gray/40" :class="{
       'w-0': !store.isOpenPostSlider,
       'w-50': store.isOpenPostSlider,
-    }"
-  >
-    <nav
-      class="space-y-1 h-full overflow-auto p-2 transition-transform"
-      :class="{
+    }">
+    <nav class="space-y-1 h-full overflow-auto p-2 transition-transform" :class="{
         'translate-x-100': store.isOpenPostSlider,
         '-translate-x-full': !store.isOpenPostSlider,
-      }"
-    >
+      }">
       <Dialog v-model:open="isOpen">
         <DialogTrigger as-child>
           <Button variant="outline" class="w-full" size="xs">
@@ -91,14 +102,10 @@ function delPost() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <a
-        v-for="(post, index) in store.posts" :key="post.title" href="#" :class="{
+      <a v-for="(post, index) in store.posts" :key="post.title" href="#" :class="{
           'bg-primary text-primary-foreground shadow-lg border-2 border-primary': store.currentPostIndex === index,
           'dark:bg-primary-dark dark:text-primary-foreground-dark dark:border-primary-dark': store.currentPostIndex === index,
-        }"
-        class="hover:bg-primary/90 hover:text-primary-foreground dark:bg-muted dark:hover:bg-muted dark:hover:border-primary-dark h-8 w-full inline-flex items-center justify-start gap-2 whitespace-nowrap rounded px-2 text-sm transition-colors dark:text-white dark:hover:text-white"
-        @click="store.currentPostIndex = index"
-      >
+        }" class="hover:bg-primary/90 hover:text-primary-foreground dark:bg-muted dark:hover:bg-muted dark:hover:border-primary-dark h-8 w-full inline-flex items-center justify-start gap-2 whitespace-nowrap rounded px-2 text-sm transition-colors dark:text-white dark:hover:text-white" @click="store.currentPostIndex = index">
         <span class="line-clamp-1">{{ post.title }}</span>
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
@@ -110,6 +117,10 @@ function delPost() {
             <DropdownMenuItem @click.stop="startRenamePost(index)">
               <Edit3 class="mr-2 size-4" />
               重命名
+            </DropdownMenuItem>
+            <DropdownMenuItem @click.stop="startCopyPost(index)">
+              <Edit3 class="mr-2 size-4" />
+              复制
             </DropdownMenuItem>
             <DropdownMenuItem v-if="store.posts.length > 1" @click.stop="startDelPost(index)">
               <Trash class="mr-2 size-4" />
@@ -138,7 +149,7 @@ function delPost() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
+      
       <AlertDialog v-model:open="isOpenDelPostConfirmDialog">
         <AlertDialogContent>
           <AlertDialogHeader>
