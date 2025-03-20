@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useDisplayStore } from '@/stores'
-import { TableIcon, UploadCloudIcon } from 'lucide-vue-next'
+import { TableIcon, UploadCloudIcon, ListRestart } from 'lucide-vue-next'
 
-const { toggleShowInsertFormDialog, toggleShowUploadImgDialog } = useDisplayStore()
+const { toggleShowInsertFormDialog, toggleShowUploadImgDialog, toggleShowReplaceFormDialog } = useDisplayStore()
 </script>
 
 <template>
@@ -18,6 +18,10 @@ const { toggleShowInsertFormDialog, toggleShowUploadImgDialog } = useDisplayStor
       <MenubarItem @click="toggleShowInsertFormDialog()">
         <TableIcon class="mr-2 h-4 w-4" />
         插入表格
+      </MenubarItem>
+      <MenubarItem @click="toggleShowReplaceFormDialog()">
+        <ListRestart class="mr-2 h-4 w-4" />
+        替换文本
       </MenubarItem>
     </MenubarContent>
   </MenubarMenu>

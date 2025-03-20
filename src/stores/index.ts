@@ -1,6 +1,6 @@
 import DEFAULT_CONTENT from '@/assets/example/markdown.md?raw'
 import DEFAULT_CSS_CONTENT from '@/assets/example/theme-css.txt?raw'
-import { altKey, codeBlockThemeOptions, colorOptions, fontFamilyOptions, fontSizeOptions, legendOptions, linkOptions, shiftKey, tablePositionOptions, themeMap, themeOptions, picOptions } from '@/config'
+import { altKey, codeBlockThemeOptions, colorOptions, fontFamilyOptions, fontSizeOptions, legendOptions, linkOptions, picOptions, shiftKey, tablePositionOptions, themeMap, themeOptions } from '@/config'
 import { addPrefix, css2json, customCssWithTemplate, customizeTheme, downloadMD, exportHTML, formatDoc } from '@/utils'
 import { initRenderer } from '@/utils/renderer'
 import CodeMirror from 'codemirror'
@@ -132,6 +132,55 @@ export const useStore = defineStore(`store`, () => {
           })
     })
   }
+
+  // 替换文档
+  const replaceContent = (replaceText:string, newText:string) => {
+    debugger
+    formatDoc((editor.value!).getValue()).then((doc) => {
+      doc = replaceOutsideBackticks(doc, replaceText, newText)
+      posts.value[currentPostIndex.value].content = doc
+      toRaw(editor.value!).setValue(doc)
+    })
+  }
+
+  function replaceOutsideBackticks(input:string, replaceText:string, newText:string) {
+    let result: string = ''
+    let inBacktick: boolean = false
+    let currentWord: string = ''
+
+    for (let i = 0; i < input.length; i++) {
+        const char = input[i]
+
+        // 检测反引号的开始和结束
+        if (char === '`') {
+            // 如果当前处于反引号内，则添加当前累积的单词并切换状态
+            result += currentWord + char // 将当前累积的单词添加到结果中（即使可能为空）
+            currentWord = '' // 清空当前单词
+            inBacktick = !inBacktick // 切换状态
+        } else {
+            if (inBacktick) {
+                // 如果当前字符在反引号内，直接添加到结果中
+                result += char
+            } else {
+                // 如果不在反引号内，处理当前字符
+                currentWord += char // 构建当前单词
+
+                // 检查当前累积的单词是否以 replaceText 结尾
+                const endIndex = currentWord.length - replaceText.length
+                if (endIndex >= 0 && currentWord.slice(endIndex) === replaceText) {
+                    // 替换文本
+                    result += currentWord.slice(0, endIndex) + newText // 添加替换后的文本
+                    currentWord = '' // 清空当前单词
+                }
+            }
+        }
+    }
+
+    // 在结束时添加掉剩余的 text（可能存在更小的未匹配部分）
+    result += currentWord
+
+    return result
+}
 
   // 切换 highlight.js 代码主题
   const codeThemeChange = () => {
@@ -551,6 +600,7 @@ export const useStore = defineStore(`store`, () => {
 
     formatContent,
     copyContent,
+    replaceContent,
     exportEditorContent2HTML,
     exportEditorContent2MD,
     exportAllContent2MD,
@@ -590,6 +640,10 @@ export const useDisplayStore = defineStore(`display`, () => {
   const isShowUploadImgDialog = ref(false)
   const toggleShowUploadImgDialog = useToggle(isShowUploadImgDialog)
 
+   // 是否展示替换文本对话框
+   const isShowReplaceFormDialog = ref(false)
+   const toggleShowReplaceFormDialog = useToggle(isShowReplaceFormDialog)
+
   return {
     isShowCssEditor,
     toggleShowCssEditor,
@@ -597,5 +651,7 @@ export const useDisplayStore = defineStore(`display`, () => {
     toggleShowInsertFormDialog,
     isShowUploadImgDialog,
     toggleShowUploadImgDialog,
+    isShowReplaceFormDialog,
+    toggleShowReplaceFormDialog,
   }
 })

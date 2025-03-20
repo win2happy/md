@@ -27,6 +27,7 @@ const {
 const {
   toggleShowInsertFormDialog,
   toggleShowUploadImgDialog,
+  toggleShowReplaceFormDialog,
 } = displayStore
 
 const isImgLoading = ref(false)
@@ -412,6 +413,9 @@ onMounted(() => {
               <ContextMenuItem inset @click="toggleShowInsertFormDialog()">
                 插入表格
               </ContextMenuItem>
+              <ContextMenuItem inset @click="toggleShowReplaceFormDialog()">
+                替换文本
+              </ContextMenuItem>
               <ContextMenuItem inset @click="resetStyleConfirm()">
                 恢复默认样式
               </ContextMenuItem>
@@ -475,6 +479,8 @@ onMounted(() => {
       <UploadImgDialog @upload-image="uploadImage" />
 
       <InsertFormDialog />
+
+      <ReplaceFormDialog />
 
       <RunLoading />
 
